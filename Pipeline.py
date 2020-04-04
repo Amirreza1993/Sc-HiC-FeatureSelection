@@ -89,7 +89,7 @@ for train_index, test_index in kf.split(X):
     W = construct_W.construct_W(X_train, **kwargs_W)
     score_lap = lap_score.lap_score(X_train, W=W)
     idx_lap = lap_score.feature_ranking(score_lap)
-    Fisher
+    #Fisher
     score_fish = fisher_score.fisher_score(X_train, y_train)
     print(score_fish)
     idx_fish = fisher_score.feature_ranking(score_fish)
