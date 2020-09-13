@@ -18,8 +18,12 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 import os
 import pandas as pd 
+from sklearn.preprocessing import StandardScaler
 
-
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+####################################IMPORT DATASET #######################3
 #CELL LINE Dataset 
 #DataMain=np.load("/home/nanni/Projects/SingleCellHiC/DI_indices/human_DIs.npy")
 DataMain=np.load("/home/amirreza/DI_indices22/human_DIs-cL_FULL.npy")
@@ -45,34 +49,26 @@ label=np.array(label)
 #y_test=y_test.astype(int)
 
 i=0
-acc=np.zeros(25)
-ARI=np.zeros(25)
+acc=np.zeros(25) #to store the results of Accuracy
+ARI=np.zeros(25)#to store the results of ARI
 
-
+# Use 5 fold cross validation
 kf = RepeatedKFold(n_splits=5, n_repeats=5) 
 X=data
 y=label
+
+
 for train_index, test_index in kf.split(X):
     
     X_train=X[train_index]
     X_test=X[test_index]
     y_train=y[train_index]
     y_test=y[test_index]
-    imputer=SimpleImputer(strategy="median")
-    imputer.fit(X_train)
-    X_train=imputer.transform(X_train)
-    imputer.fit(X_test)
-    X_test=imputer.transform(X_test)
-
-    from sklearn.preprocessing import StandardScaler
+    
+######################### Data Preprocessing 
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
-
     X_test = sc.transform(X_test)
-
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.impute import SimpleImputer
-    from sklearn.pipeline import Pipeline
     num_pip=Pipeline([
         ('imputer',SimpleImputer(strategy="median")),
         ('std_scaler',StandardScaler()),
@@ -81,6 +77,8 @@ for train_index, test_index in kf.split(X):
     X_train=num_pip.fit_transform(X_train)
     X_test = num_pip.transform(X_test)
     print('fs')
+    
+########################### Apply Feature Selection methods :ReliefF, Laplacian score & Fisher
     #ReliefF
     score_rel = reliefF.reliefF(X_train, y_train)
     idx_rel = reliefF.feature_ranking(score_rel)
@@ -93,23 +91,19 @@ for train_index, test_index in kf.split(X):
     score_fish = fisher_score.fisher_score(X_train, y_train)
     print(score_fish)
     idx_fish = fisher_score.feature_ranking(score_fish)
-    #fscore
-    from skfeature.function.statistical_based import f_score
-    score = f_score.f_score(X_train, y_train)
-    idx_fscore = f_score.feature_ranking(score)
-    print(idx_fish[0:20])
-    #Integration
+
+  
+    ###################################### Feature Integration
     print('ens')
-     x=1150 #Threshold for each FS method
-    idxM=idx_fish[:x]
-    idxN=idx_fish[:x]
-    idxO=idx_fscore[:x]
-    idxP=idx_lap[:x]
- #AND
+    threshold=1150 #Threshold for each FS method
+    idxM=idx_rel[:threshold]
+    idxN=idx_lap[:threshold]
+    idxO=idx_fish[:threshold]
+#AND
     idx = set(idxO) - (set(idxO) - set(idxM)-set(idxN))
     idx_and=reduce(np.intersect1d, (idxO, idxM, idxN))
     print(idx_and.shape)
-    #OR
+#OR
     idx=np.concatenate((idxM,idxN))
     idx_or=np.unique(idx)
     print(idx_or.shape)
@@ -120,16 +114,19 @@ for train_index, test_index in kf.split(X):
     b=[i[0] for i in a if i[1]>1 ]
     idx_mv=np.array(b)
     print(idx_mv.shape)
-##select fs
-    #Random selection
+
+#Random selection
     idx_rand=random.sample(range(0, np.shape(X_train)[1]), num_fea)
 
 
-    idx=idx_rand #Integration method
-    num_fea = 250
+    idx=idx_mv #define desired Integration method
+    num_fea = 250 #define number of feature to consider 
     selected_features_train=X_train[:,idx[:num_fea]]
     selected_features_test=X_test[:,idx[:num_fea]]
     print('cl')
+    
+    
+###################################### Implementing the MLP classifier
 #MLPC
     architecture = (100,50,50) ###(A num_layers sized tuple with number of hidden neurons as each element)
     activationf = 'relu'
