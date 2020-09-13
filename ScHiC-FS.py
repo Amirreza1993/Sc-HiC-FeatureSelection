@@ -40,9 +40,9 @@ label=np.array(label)
 #label=np.array(label)
 
 
-X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.2, random_state=40)
-y_train=y_train.astype(int)
-y_test=y_test.astype(int)
+#X_train, X_test, y_train, y_test = train_test_split(data, label, test_size=0.2, random_state=40)
+#y_train=y_train.astype(int)
+#y_test=y_test.astype(int)
 
 i=0
 acc=np.zeros(25)
@@ -130,7 +130,7 @@ for train_index, test_index in kf.split(X):
     selected_features_train=X_train[:,idx[:num_fea]]
     selected_features_test=X_test[:,idx[:num_fea]]
     print('cl')
-    #MLPC
+#MLPC
     architecture = (100,50,50) ###(A num_layers sized tuple with number of hidden neurons as each element)
     activationf = 'relu'
     learning_rate=0.01
