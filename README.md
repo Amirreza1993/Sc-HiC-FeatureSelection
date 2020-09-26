@@ -27,19 +27,20 @@ In `convert_to_numpy.py`, `BIN_SIZE` is the desired resolution to create the Con
 ### Directionality Index (`DI_imp.py`):
 
 To apply the Directionality index to the contact matrices, you can use `DI_imp.py` which:
-`output_path` is the path which the contact matrices are saved (with `".npy"` extension)
-`bins`: chromosome region size in form of [Chr:Start-End].
-matrices_meta : csv file which represents the labels for each sample( in folder matrices_meta you can find for corresponded file for  `GSE94489` and `GSE84020`)
 
-The output of `DI_imp.py` is a numpy dataset (`human_DIs.npy`) which is the directionality index matrix of the dataset.
+* `output_path` is the path which the contact matrices are saved (with `".npy"` extension)
+* `bins`: chromosome region size in form of [Chr:Start-End].
+* matrices_meta : csv file which represents the labels for each sample( in folder matrices_meta you can find for corresponded file for  `GSE94489` and `GSE84920`)
 
-### Feature selection and evaluation (`ScHiC-FS.py):
+The output of `DI_imp.py` is a numpy dataset (`human_DIs.npy`) which contains the directionality index matrix of the imported contact matrices.
+
+### Feature selection and evaluation (`ScHiC-FS.py`):
 
 
-To run the proposed feature selection method and evaluation using MLPC, python file  `ScHiC-FS.py`` should `be run, which:
+To run the proposed feature selection method and evaluation using MLPC, python file  `ScHiC-FS.py` should be run, which:
 
 `DataMain` : The location of `human_DIs.npy` file which is obtained in the previous step.
-`human_meta` : csv file which represents the labels for each sample( in folder matrices_meta you can find for corresponded file for  `GSE94489` and `GSE84020`)
+`human_meta` : csv file which represents the labels for each sample(you can find the corresponded file for  `GSE94489` and `GSE84020` in folder `matrices_meta`)
 
 To apply method on Cell Cycle dataset (`GSE94489`) the following code should be executed:
 ```python
