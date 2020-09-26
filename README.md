@@ -19,7 +19,7 @@ conda install -c pchrapka scikit-feature
 ```
 
 ## Usage
-### convert_to_numpy
+### convert_to_numpy ( `convert_to_numpy.py`):
 In order to use the proposed algorithem, the input data file should be in `.npy` format. python script  `convert_to_numpy.py` converts raw data file to `.npz` format.
 In `convert_to_numpy.py`, `BIN_SIZE` is the desired resolution to create the Contact Matrix. Download and unpack required gz files (`raw_dir` , `schic2_mm9_dir`  ,`chrom_sizes.txt` and ...) from [GSE94489](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94489) and  [GSE84920](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84920) .
 
@@ -33,7 +33,7 @@ matrices_meta : csv file which represents the labels for each sample( in folder 
 
 The output of `DI_imp.py` is a numpy dataset (`human_DIs.npy`) which is the directionality index matrix of the dataset.
 
-### Feature selection and evaluation
+### Feature selection and evaluation (`ScHiC-FS.py):
 
 
 To run the proposed feature selection method and evaluation using MLPC, python file  `ScHiC-FS.py`` should `be run, which:
@@ -67,9 +67,11 @@ In order to choose the combination method you should change the combination_meth
 * AND operation : `combination_method= 1` ,
 * OR Operation :`combination_method=2`,
 * Majority Voting Operation :`combination_method=3` and for 
-* Random selection ``combination_method=4`.
-As mentioned in the article, each feature selection method required a threshold which it can define in the threshold variable in the code.
-
+* Random selection `combination_method=4`.
+As mentioned in the article, each feature selection method required a `threshold` which it can define in the ```threshold=1000``` variable in the code.
+```python
+threshold=1000
+```
 #### Output
 The outputs of this script include:
 * `acc : The accuracy on each cross-fold validation iterations`
