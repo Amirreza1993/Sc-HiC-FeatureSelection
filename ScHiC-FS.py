@@ -39,9 +39,6 @@ matrices_meta.cell_cycle=[cell_cycle[item] for item in matrices_meta.cell_cycle]
 label=matrices_meta['cell_cycle']
 label=np.array(label)
 
-
-
-
 combination_method=1 #For AND operation :1 ,OR Operation :2, Majority Voting Operation :3 and Random selection 4
 threshold=1150 #Threshold for each feature selection method
 
