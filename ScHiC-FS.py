@@ -89,8 +89,6 @@ for train_index, test_index in kf.split(X):
     score_fish = fisher_score.fisher_score(X_train, y_train)
     print(score_fish)
     idx_fish = fisher_score.feature_ranking(score_fish)
-
-  
     ###################################### Feature Integration
     idxM=idx_rel[:threshold]
     idxN=idx_lap[:threshold]
@@ -125,9 +123,6 @@ for train_index, test_index in kf.split(X):
 
     selected_features_train=X_train[:,idx]
     selected_features_test=X_test[:,idx]
-    
-    
-    
 ###################################### Implementing the MLP classifier
 #MLPC
     architecture = (100,50,50) ###(A num_layers sized tuple with number of hidden neurons as each element)
