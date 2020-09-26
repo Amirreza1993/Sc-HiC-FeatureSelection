@@ -1,5 +1,18 @@
 
 # Sc-HiC-FeatureSelection
+## Required libraries
+To apply this algorithem on `Python 3.6.8` , you need several libraries. 
+### scikit learn
+To install this package with conda run:
+```python
+conda install -c anaconda scikit-learn
+```
+### scikit-feature
+To install this package with conda run:
+```python
+conda install -c pchrapka scikit-feature
+```
+
 ## Usage
 ### convert_to_numpy
 In order to use the proposed algorithem, the input data file should be in `.npy` format. python script  `convert_to_numpy.py` converts raw data file to `.npz` format.
